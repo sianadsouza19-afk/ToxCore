@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from transformers import pipeline
+import google.generativeai as genai
 from googleapiclient.discovery import build
 import re
 
@@ -17,6 +18,9 @@ app.add_middleware(
 # ⚠️ Paste your API key below
 YOUTUBE_API_KEY = "AIzaSyClzsbW-CMRbeyZbBa6ltx6GdUyTSyVh8w"
 
+GEMINI_API_KEY = "AIzaSyBLq8GlVTX5GoFWGt2HOgYJP6jWLxqHw40"
+genai.configure(api_key=GEMINI_API_KEY)
+
 print("Loading AI model...")
 classifier = pipeline("text-classification",
     model="unitary/toxic-bert",
@@ -25,6 +29,9 @@ print("Model ready!")
 
 class URLRequest(BaseModel):
     url: str
+
+class AIChatRequest(BaseModel):
+    message: str
 
 def get_video_id(url):
     patterns = [
@@ -131,3 +138,27 @@ async def analyze(req: URLRequest):
         "intensity": intensity,
         "comments": results
     }
+
+@app.post("/ai-chat")
+async def ai_chat(req: AIChatRequest):
+    try:
+        system_instruction = (
+            "You are 'CyberShield Support,' an anonymous, highly empathetic emotional first-aid AI companion. "
+            "Your sole job is to support a user who has encountered severe digital cyberbullying or threats on YouTube. "
+            "RULES: Keep responses concise and validating. Use warm, comforting, jargon-free statements. "
+            "Remind them that they are safe and anonymous. Avoid jumping into legal instructions right away; focus on calming their stress."
+        )
+
+        model = genai.GenerativeModel(
+            model_name="gemini-1.5-flash",
+            system_instruction=system_instruction
+        )
+
+        response = model.generate_content(req.message)
+        return {"reply": response.text}
+
+    except Exception as e:
+        print(f"Gemini API Error: {e}")
+        return {"reply": "I'm right here with you. Take a slow, regular breath. Let's try typing that out once more."}
+    
+    

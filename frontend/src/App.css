@@ -1,96 +1,114 @@
-.app {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  min-height: 100vh;
+/* Styling updates for the AI Integration elements */
+.toxic-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ai-chat-trigger-btn {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.ai-chat-trigger-btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+/* Sliding AI Drawer Sidebar Panel */
+.ai-chat-drawer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 400px;
+  height: 100vh;
+  background: #0d1b3e;
+  border-left: 2px solid #1e3a8a;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.5);
   display: flex;
   flex-direction: column;
+  z-index: 999;
+  animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translate(0); }
+}
+
+.chat-drawer-header {
+  padding: 20px;
+  border-bottom: 1px solid #1e3a8a;
+  background: #11224d;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
 }
 
-/* Header */
-.header { text-align: center; margin-bottom: 32px; }
-.badge {
-  background: #1a2a4a; border: 1px solid #2a3a5a;
-  padding: 6px 16px; border-radius: 999px;
-  font-size: 11px; letter-spacing: 2px; color: #8fa3b1;
-}
-.title  { font-size: 56px; font-weight: 800; color: #63b3ff; margin: 12px 0 8px; }
-.subtitle { color: #8fa3b1; font-size: 16px; max-width: 520px; line-height: 1.6; }
+.chat-drawer-header h4 { margin: 0; font-size: 16px; color: #63b3ff; }
+.status-indicator { font-size: 11px; color: #10b981; margin-top: 2px; }
+.close-drawer-btn { background: transparent; border: none; color: #8fa3b1; font-size: 24px; cursor: pointer; }
 
-/* Input */
-.input-row {
-  display: flex; gap: 0; width: 100%; max-width: 720px;
-  border: 1.5px solid #2a4a7a; border-radius: 12px; overflow: hidden;
-  background: #111e35; margin-bottom: 24px;
+.chat-drawer-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-.url-input {
-  flex: 1; padding: 16px 20px; background: transparent;
-  border: none; outline: none; color: #fff; font-size: 15px;
-}
-.detect-btn {
-  padding: 16px 28px; background: #4f46e5; border: none;
-  color: #fff; font-weight: 700; font-size: 15px;
-  cursor: pointer; transition: background 0.2s;
-}
-.detect-btn:hover { background: #4338ca; }
-.detect-btn:disabled { background: #333; cursor: not-allowed; }
 
-/* Error */
-.error { color: #f87171; margin-bottom: 16px; }
+.chat-bubble-row { display: flex; width: 100%; }
+.chat-bubble-row.user { justify-content: flex-end; }
+.chat-bubble-row.ai { justify-content: flex-start; }
 
-/* Results */
-.results { width: 100%; }
-.results-title { font-size: 13px; color: #4f7ab5; letter-spacing: 1px; margin-bottom: 4px; }
-.results-title span { color: #fff; font-size: 22px; display: block; margin-top: 4px; }
-
-.stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin: 20px 0; }
-.stat-card {
-  background: #111e35; border-radius: 12px; padding: 20px;
-  border: 1px solid #1e3050;
+.chat-bubble {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 13.5px;
+  line-height: 1.5;
 }
-.stat-label { font-size: 11px; letter-spacing: 1.5px; color: #8fa3b1; margin-bottom: 8px; }
-.stat-value { font-size: 36px; font-weight: 800; color: #fff; }
-.stat-value.red { color: #f87171; }
-.stat-sub { font-size: 12px; color: #4f7ab5; margin-top: 4px; }
+.chat-bubble-row.user .chat-bubble { background: #4f46e5; color: white; border-bottom-right-radius: 0; }
+.chat-bubble-row.ai .chat-bubble { background: #111e35; color: #e2e8f0; border: 1px solid #1e3a8a; border-bottom-left-radius: 0; }
 
-.main-grid { display: grid; grid-template-columns: 1fr 340px; gap: 24px; margin-top: 8px; }
+.typing-indicator { font-size: 12px; color: #8fa3b1; font-style: italic; animation: pulse 1.5s infinite; }
 
-/* Comments */
-.comments-section h3,
-.resources-section h3 {
-  font-size: 18px; font-weight: 700; color: #fff;
-  border-left: 3px solid #4f46e5; padding-left: 10px; margin-bottom: 16px;
+.chat-drawer-footer {
+  padding: 16px;
+  background: #11224d;
+  border-top: 1px solid #1e3a8a;
+  display: flex;
+  gap: 8px;
 }
-.comment-card {
-  background: #111e35; border-radius: 12px; padding: 16px;
-  border: 1px solid #1e3050; margin-bottom: 12px;
-}
-.comment-card.toxic { border-color: #7f1d1d; }
-.comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.comment-user { display: flex; gap: 10px; align-items: center; }
-.avatar { width: 36px; height: 36px; border-radius: 50%; background: #2a4a7a; }
-.username { font-weight: 600; font-size: 14px; }
-.likes { font-size: 12px; color: #8fa3b1; }
-.badge-tag {
-  font-size: 11px; font-weight: 700; padding: 4px 10px;
-  border-radius: 999px; letter-spacing: 0.5px;
-}
-.badge-tag.safe     { background: #14532d; color: #4ade80; }
-.badge-tag.toxicity { background: #7f1d1d; color: #fca5a5; }
-.comment-text { font-size: 14px; color: #d1dde8; line-height: 1.5; }
-.reason { margin-top: 8px; font-size: 13px; color: #f87171; }
 
-/* Resources */
-.resource-card {
-  display: flex; justify-content: space-between; align-items: center;
-  background: #111e35; border-radius: 12px; padding: 16px;
-  border: 1px solid #1e3050; margin-bottom: 12px;
-  text-decoration: none; color: inherit; transition: border-color 0.2s;
+.chat-drawer-footer input {
+  flex: 1;
+  background: #0a1223;
+  border: 1px solid #1e3a8a;
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  font-size: 13px;
+  outline: none;
 }
-.resource-card:hover { border-color: #4f46e5; }
-.resource-name { color: #63b3ff; font-weight: 600; margin-bottom: 4px; }
-.resource-desc { color: #8fa3b1; font-size: 13px; }
 
-/* Footer */
-footer { margin-top: 48px; color: #4f7ab5; font-size: 13px; text-align: center; }
+.chat-drawer-footer button {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
