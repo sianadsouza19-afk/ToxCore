@@ -25,7 +25,7 @@
 
 ##  Tech Stack
 
-* **ML Model:** `unitary/toxic-bert` (BERT fine-tuned on Jigsaw dataset)
+* **ML Model:** `unitary/unbiased-toxic-roberta` (RoBERTa fine-tuned on Jigsaw Unintended Bias dataset)
 * **ML Framework:** PyTorch + HuggingFace Transformers
 * **LLM (Chatbot):** Google Gemini 2.5 Flash via `google-generativeai` SDK
 * **Backend:** Python (FastAPI)
